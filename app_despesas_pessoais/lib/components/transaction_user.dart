@@ -26,54 +26,6 @@ class _MyWidgetState extends State<TransactionUser> {
       value: 159.99,
       date: DateTime.now(),
     ),
-    Transaction(
-      id: 't1',
-      title: 'Memória RAM SODIM 8GB',
-      value: 216.5,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Memória RAM SODIM 8GB',
-      value: 216.5,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Teclado Mecânico',
-      value: 159.99,
-      date: DateTime.now(),
-    ),
   ];
 
   _addTrasaction(String title, double value) {
