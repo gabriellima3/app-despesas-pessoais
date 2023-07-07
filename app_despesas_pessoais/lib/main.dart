@@ -1,9 +1,8 @@
-import 'package:app_despesas_pessoais/components/transaction_form.dart';
-import 'package:app_despesas_pessoais/components/transaction_list.dart';
-import 'package:app_despesas_pessoais/models/transaction.dart';
 import 'package:flutter/material.dart';
-
-import 'components/transaction_user.dart';
+import 'dart:math';
+import './components/transaction_form.dart';
+import './models/transaction.dart';
+import '../components/transaction_list.dart';
 
 main() => runApp(ExpensesApp());
 
@@ -16,20 +15,67 @@ class ExpensesApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _transactions = [
+    Transaction(
+      id: 't1',
+      title: 'Memória RAM SODIM 8GB',
+      value: 216.5,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Teclado Mecânico',
+      value: 159.99,
+      date: DateTime.now(),
+    ),
+  ];
+
+  _addTrasaction(String title, double value) {
+    final newTransaction = Transaction(
+        id: Random().nextDouble().toString(),
+        title: title,
+        value: value,
+        date: DateTime.now());
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+  }
+
+  _openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTrasaction);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => _openTransactionFormModal(context),
+          )
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
+            const SizedBox(
               width: double.infinity,
               child: Card(
                 color: Colors.blue,
@@ -37,10 +83,15 @@ class MyHomePage extends StatelessWidget {
                 child: Text('Gráfico'),
               ),
             ),
-            TransactionUser(),
+            TransactionList(_transactions),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => _openTransactionFormModal(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
