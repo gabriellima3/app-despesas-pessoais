@@ -1,3 +1,4 @@
+import 'package:app_despesas_pessoais/components/chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import './components/transaction_form.dart';
@@ -21,7 +22,7 @@ class ExpensesApp extends StatelessWidget {
         textTheme: tema.textTheme.copyWith(
           titleLarge: const TextStyle(
             fontFamily: 'Poppins',
-            fontSize: 18,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -44,32 +45,53 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class _MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Memória RAM SODIM 8GB',
-    //   value: 216.5,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Teclado Mecânico',
-    //   value: 159.99,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't0',
+      title: 'Conta Antiga',
+      value: 400.00,
+      date: DateTime.now().subtract(const Duration(days: 33)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now().subtract(const Duration(days: 4)),
+    ),
   ];
 
-  _addTrasaction(String title, double value) {
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
+
+  _addTransaction(String title, double value) {
     final newTransaction = Transaction(
-        id: Random().nextDouble().toString(),
-        title: title,
-        value: value,
-        date: DateTime.now());
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
 
     setState(() {
       _transactions.add(newTransaction);
     });
+
     Navigator.of(context).pop();
   }
 
@@ -77,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return TransactionForm(_addTrasaction);
+        return TransactionForm(_addTransaction);
       },
     );
   }
@@ -85,29 +107,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _openTransactionFormModal(context),
-          )
+          ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                elevation: 5,
-                child: Text('Gráfico'),
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transactions),
           ],
         ),
