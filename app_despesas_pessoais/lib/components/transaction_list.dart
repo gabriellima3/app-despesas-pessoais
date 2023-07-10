@@ -11,7 +11,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
+      height: 420,
       child: transactions.isEmpty
           ? Column(
               children: [
@@ -40,17 +40,22 @@ class TransactionList extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                   child: ListTile(
                     leading: CircleAvatar(
+                      backgroundColor: Color.fromRGBO(61, 143, 172, 1),
                       radius: 30,
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: FittedBox(
-                          child: Text('R\$${tr.value}'),
+                          child: Text(
+                            'R\$${tr.value}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
                     title: Text(
                       tr.title,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                     subtitle: Text(DateFormat('d MMM y').format(tr.date)),
                     trailing: IconButton(
